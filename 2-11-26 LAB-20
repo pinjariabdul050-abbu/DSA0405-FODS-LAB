@@ -1,0 +1,22 @@
+import numpy as np
+from scipy import stats
+
+# Generating synthetic conversion rate data for Design A and Design B
+np.random.seed(42)
+design_a = np.random.binomial(n=1, p=0.10, size=500)  # ~10% conversion
+design_b = np.random.binomial(n=1, p=0.14, size=500)  # ~14% conversion
+
+# Perform two-sample independent t-test
+t_stat, p_value = stats.ttest_ind(design_a, design_b)
+
+print(f"Design A Mean Conversion Rate: {np.mean(design_a):.4f}")
+print(f"Design B Mean Conversion Rate: {np.mean(design_b):.4f}")
+print(f"t-statistic: {t_stat:.4f}")
+print(f"p-value:     {p_value:.4f}")
+
+# Conclusion at alpha = 0.05
+alpha = 0.05
+if p_value < alpha:
+    print("\nResult: Reject Null Hypothesis — There IS a statistically significant difference between Design A and Design B.")
+else:
+    print("\nResult: Fail to Reject Null Hypothesis — No statistically significant difference found.")
