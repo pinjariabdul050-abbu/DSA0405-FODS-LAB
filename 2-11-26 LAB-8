@@ -1,0 +1,14 @@
+import pandas as pd
+
+# Sample Dataset
+data = {
+    'product_name': ['A', 'B', 'A', 'C', 'B', 'D', 'E', 'F', 'A', 'C', 'E', 'E'],
+    'quantity_sold': [10, 5, 15, 8, 12, 30, 25, 2, 7, 14, 18, 5]
+}
+df = pd.DataFrame(data)
+
+# Group by product, sum quantity sold, and get top 5
+top_5_products = df.groupby('product_name')['quantity_sold'].sum().nlargest(5)
+
+print("Top 5 Most Sold Products:")
+print(top_5_products)
