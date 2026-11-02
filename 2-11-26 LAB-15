@@ -1,0 +1,14 @@
+import pandas as pd
+
+# Sample dataset of likes per post
+likes_data = [15, 100, 45, 15, 200, 45, 100, 15, 500, 45, 100, 15]
+
+# Convert to Pandas Series
+likes_series = pd.Series(likes_data)
+
+# Calculate frequency distribution of likes
+likes_distribution = likes_series.value_counts().sort_index()
+
+print("Frequency Distribution of Likes:")
+for likes, count in likes_distribution.items():
+    print(f"Posts with {likes} likes: {count}")
