@@ -1,0 +1,47 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+
+# Dataset from prompt
+data = {
+    'age': [23, 23, 27, 27, 39, 41, 47, 49, 50, 52, 54, 54, 56, 57, 58, 58, 60, 61],
+    'fat': [9.5, 26.5, 7.8, 17.8, 31.4, 25.9, 27.4, 27.2, 31.2, 34.6, 42.5, 28.8, 33.4, 30.2, 34.1, 32.9, 41.2, 35.7]
+}
+df = pd.DataFrame(data)
+
+# 1. Calculate mean, median, and standard deviation
+print("--- Age Statistics ---")
+print(f"Mean:   {df['age'].mean():.2f}")
+print(f"Median: {df['age'].median():.2f}")
+print(f"StdDev: {df['age'].std():.2f}")
+
+print("\n--- %Fat Statistics ---")
+print(f"Mean:   {df['fat'].mean():.2f}")
+print(f"Median: {df['fat'].median():.2f}")
+print(f"StdDev: {df['fat'].std():.2f}")
+
+# 2. Boxplots (Using tick_labels instead of labels)
+plt.figure(figsize=(8, 4))
+plt.boxplot([df['age'], df['fat']], tick_labels=['Age', '%Fat'])
+plt.title('Boxplots for Age and %Fat')
+plt.ylabel('Values')
+plt.show()
+
+# 3. Scatter plot
+plt.figure(figsize=(6, 4))
+plt.scatter(df['age'], df['fat'], color='purple')
+plt.title('Scatter Plot: Age vs %Fat')
+plt.xlabel('Age')
+plt.ylabel('%Fat')
+plt.grid(True)
+plt.show()
+
+# 4. Q-Q Plots
+fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+stats.probplot(df['age'], dist="norm", plot=axes[0])
+axes[0].set_title('Q-Q Plot for Age')
+
+stats.probplot(df['fat'], dist="norm", plot=axes[1])
+axes[1].set_title('Q-Q Plot for %Fat')
+plt.tight_layout()
+plt.show()
