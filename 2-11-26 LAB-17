@@ -1,0 +1,50 @@
+import pandas as pd
+import re
+from collections import Counter
+import matplotlib.pyplot as plt
+
+# 1. Create a sample 'data.csv' for demonstration
+sample_df = pd.DataFrame({
+    'feedback': [
+        "The product quality is amazing and fantastic!",
+        "Customer service was terrible and slow.",
+        "Fast delivery, amazing packaging, and high quality product."
+    ]
+})
+sample_df.to_csv('data.csv', index=False)
+
+# Define basic English stopwords
+STOPWORDS = {'the', 'and', 'is', 'was', 'a', 'an', 'in', 'on', 'of', 'for', 'with', 'to', 'this'}
+
+# 2. Load dataset
+df = pd.read_csv('data.csv')
+
+# 3. Preprocess text
+cleaned_words = []
+for comment in df['feedback']:
+    comment = comment.lower()                             # Lowercase
+    words = re.findall(r'\b[a-z]+\b', comment)            # Remove punctuation/numbers
+    words = [w for w in words if w not in STOPWORDS]      # Remove stopwords
+    cleaned_words.extend(words)
+
+# 4. Calculate frequency distribution
+word_freq = Counter(cleaned_words)
+
+# 5. Get user input for N
+N = int(input("Enter top N most frequent words to display: ") or 5)
+top_words = word_freq.most_common(N)
+
+words, counts = zip(*top_words)
+
+print(f"\nTop {N} Words:")
+for word, count in top_words:
+    print(f"{word}: {count}")
+
+# 6. Plot bar graph
+plt.figure(figsize=(8, 4))
+plt.bar(words, counts, color='teal', edgecolor='black')
+plt.title(f'Top {N} Most Frequent Words in Customer Feedback')
+plt.xlabel('Words')
+plt.ylabel('Frequency')
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.show()
