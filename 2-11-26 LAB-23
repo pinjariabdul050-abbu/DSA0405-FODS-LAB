@@ -1,0 +1,43 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+
+# Generate sample clinical trial data
+np.random.seed(42)
+control_group = np.random.normal(loc=120, scale=10, size=30)     # Placebo
+treatment_group = np.random.normal(loc=112, scale=10, size=30)   # New Drug
+
+# Perform Two-sample T-test
+t_stat, p_value = stats.ttest_ind(control_group, treatment_group)
+
+print("--- HYPOTHESIS TEST RESULTS ---")
+print(f"T-statistic: {t_stat:.4f}")
+print(f"P-value: {p_value:.4f}")
+
+alpha = 0.05
+if p_value < alpha:
+    print("Conclusion: Reject the null hypothesis. The new treatment shows a statistically significant effect.")
+else:
+    print("Conclusion: Fail to reject the null hypothesis. No statistically significant difference found.")
+
+# Visualization
+plt.figure(figsize=(10, 5))
+
+# Plot Boxplot / Bar Plot of groups
+plt.subplot(1, 2, 1)
+plt.boxplot([control_group, treatment_group], labels=['Control (Placebo)', 'Treatment (Drug)'])
+plt.ylabel("Blood Pressure / Measured Level")
+plt.title("Clinical Trial Comparison")
+
+# Plot Null Hypothesis Distribution & P-value visualization
+plt.subplot(1, 2, 2)
+x = np.linspace(-4, 4, 1000)
+y = stats.norm.pdf(x, 0, 1)
+plt.plot(x, y, label='Null Hypothesis Dist')
+plt.axvline(t_stat, color='red', linestyle='--', label=f'T-Stat ({t_stat:.2f})')
+plt.fill_between(x, y, where=(x >= abs(t_stat)) | (x <= -abs(t_stat)), color='red', alpha=0.3, label=f'P-value area ({p_value:.4f})')
+plt.title("P-value Visualization")
+plt.legend()
+
+plt.tight_layout()
+plt.show()
