@@ -1,0 +1,20 @@
+import numpy as np
+import scipy.stats as stats
+
+# Generating synthetic sample data (25 patients each for total 50)
+np.random.seed(42)
+drug_group = np.random.normal(loc=15, scale=4, size=25)     # Mean reduction ~15 mmHg
+placebo_group = np.random.normal(loc=5, scale=4, size=25)   # Mean reduction ~5 mmHg
+
+def confidence_interval_95(data):
+    n = len(data)
+    mean = np.mean(data)
+    sem = stats.sem(data)  # Standard error of the mean
+    margin = stats.t.ppf((1 + 0.95) / 2., n - 1) * sem
+    return mean - margin, mean + margin
+
+drug_ci = confidence_interval_95(drug_group)
+placebo_ci = confidence_interval_95(placebo_group)
+
+print(f"95% Confidence Interval for Drug Group Reduction:    ({drug_ci[0]:.2f}, {drug_ci[1]:.2f}) mmHg")
+print(f"95% Confidence Interval for Placebo Group Reduction: ({placebo_ci[0]:.2f}, {placebo_ci[1]:.2f}) mmHg")
