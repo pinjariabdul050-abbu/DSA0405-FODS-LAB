@@ -1,0 +1,25 @@
+import numpy as np
+import pandas as pd
+
+# Creating sample dataset and saving to CSV for demonstration
+sample_data = {
+    'Bedrooms': [3, 5, 2, 6, 4, 5, 3],
+    'SquareFootage': [1500, 3200, 1100, 4000, 2400, 3500, 1800],
+    'SalePrice': [250000, 550000, 180000, 720000, 410000, 600000, 290000]
+}
+pd.DataFrame(sample_data).to_csv('house_data.csv', index=False)
+
+# Load CSV file into a NumPy array
+house_data = np.genfromtxt('house_data.csv', delimiter=',', skip_header=1)
+
+# Extract Bedroom column (index 0) and Sale Price column (index 2)
+bedrooms = house_data[:, 0]
+sale_prices = house_data[:, 2]
+
+# Filter prices for houses with more than 4 bedrooms
+filtered_prices = sale_prices[bedrooms > 4]
+
+# Calculate the average sale price
+avg_price = np.mean(filtered_prices)
+
+print(f"Average sale price for houses with > 4 bedrooms: ${avg_price:,.2f}")
