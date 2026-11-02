@@ -1,0 +1,25 @@
+import matplotlib.pyplot as plt
+
+days = list(range(1, 11))
+sales = [100, 120, 115, 140, 130, 160, 175, 165, 190, 210]
+
+# 1. Line Plot
+plt.plot(days, sales, marker='o', color='green')
+plt.title('Sales Over Time (Line Plot)')
+plt.xlabel('Day')
+plt.ylabel('Sales')
+plt.show()
+
+# 2. Scatter Plot
+plt.scatter(days, sales, color='red')
+plt.title('Sales Over Time (Scatter Plot)')
+plt.xlabel('Day')
+plt.ylabel('Sales')
+plt.show()
+
+# 3. Bar Plot
+plt.bar(days, sales, color='orange')
+plt.title('Sales Over Time (Bar Plot)')
+plt.xlabel('Day')
+plt.ylabel('Sales')
+plt.show()
