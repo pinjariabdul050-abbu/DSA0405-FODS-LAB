@@ -1,0 +1,20 @@
+from collections import Counter
+import re
+
+# Creating a sample file for demonstration
+with open('sample_text.txt', 'w') as f:
+    f.write("Data science is an interdisciplinary field. Data science uses algorithms and data.")
+
+# Read text from file
+with open('sample_text.txt', 'r') as file:
+    text = file.read().lower()
+
+# Remove non-alphanumeric characters and tokenize words
+words = re.findall(r'\b\w+\b', text)
+
+# Calculate frequency distribution
+word_counts = Counter(words)
+
+print("Word Frequency Distribution:")
+for word, count in word_counts.items():
+    print(f"{word}: {count}")
