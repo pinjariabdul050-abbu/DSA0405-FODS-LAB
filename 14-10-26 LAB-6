@@ -1,0 +1,22 @@
+# Input lists and percentage rates
+prices = [12.50, 4.00, 15.00, 8.25]
+quantities = [2, 3, 1, 4]
+discount_rate = 10.0  # 10% discount
+tax_rate = 8.0        # 8% sales tax
+
+# 1. Calculate subtotal using list comprehension
+subtotal = sum(p * q for p, q in zip(prices, quantities))
+
+# 2. Apply discount
+discount_amount = subtotal * (discount_rate / 100)
+discounted_subtotal = subtotal - discount_amount
+
+# 3. Apply tax
+tax_amount = discounted_subtotal * (tax_rate / 100)
+total_cost = discounted_subtotal + tax_amount
+
+print(f"Subtotal:           ${subtotal:.2f}")
+print(f"Discount ({discount_rate}%):   -${discount_amount:.2f}")
+print(f"Tax ({tax_rate}%):         +${tax_amount:.2f}")
+print(f"--------------------------------")
+print(f"Total Cost:         ${total_cost:.2f}")
