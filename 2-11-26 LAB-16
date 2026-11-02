@@ -1,0 +1,20 @@
+from collections import Counter
+import re
+
+# Sample customer reviews dataset
+reviews = [
+    "Great product! Highly recommend this product.",
+    "The quality is okay, but the delivery was slow.",
+    "Excellent product and fast delivery!"
+]
+
+# Combine reviews, convert to lowercase, and split into words
+combined_text = " ".join(reviews).lower()
+words = re.findall(r'\b\w+\b', combined_text)
+
+# Calculate word frequency
+word_counts = Counter(words)
+
+print("Word Frequency Distribution in Reviews:")
+for word, count in word_counts.most_common():
+    print(f"{word}: {count}")
