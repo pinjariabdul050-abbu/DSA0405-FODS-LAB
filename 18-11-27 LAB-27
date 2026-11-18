@@ -1,0 +1,27 @@
+import numpy as np
+from sklearn.linear_model import LogisticRegression
+
+# Sample telecom dataset: [Monthly_Usage_Minutes, Contract_Months, Monthly_Bill]
+X = np.array([
+    [300, 24, 50],
+    [120, 1, 85],
+    [450, 36, 45],
+    [90, 2, 95],
+    [500, 24, 55],
+    [150, 3, 80]
+])
+# Labels: 0 = Not Churned, 1 = Churned
+y = np.array([0, 1, 0, 1, 0, 1])
+
+model = LogisticRegression()
+model.fit(X, y)
+
+# User input
+minutes = float(input("Enter monthly usage minutes: "))
+contract = int(input("Enter contract duration (months): "))
+bill = float(input("Enter monthly bill amount: "))
+
+new_customer = np.array([[minutes, contract, bill]])
+prediction = model.predict(new_customer)[0]
+
+print("Churn Prediction:", "Customer Will Churn (1)" if prediction == 1 else "Customer Will Stay (0)")
