@@ -1,0 +1,30 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_error, r2_score
+
+# Sample automobile dataset
+data = {
+    'Engine_Size_L': [1.2, 1.5, 1.8, 2.0, 2.5, 3.0, 1.4, 2.2],
+    'Horsepower': [85, 110, 140, 175, 210, 280, 100, 190],
+    'Fuel_Efficiency_MPG': [38, 34, 30, 27, 23, 19, 36, 25],
+    'Price': [16000, 20000, 24500, 29000, 35000, 45000, 18500, 32000]
+}
+df = pd.DataFrame(data)
+
+features = ['Engine_Size_L', 'Horsepower', 'Fuel_Efficiency_MPG']
+X = df[features]
+y = df['Price']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+
+print(f"MAE: ${mean_absolute_error(y_test, y_pred):,.2f}")
+print(f"R2 Score: {r2_score(y_test, y_pred):.4f}\n")
+
+print("Feature Influence (Coefficients):")
+for feat, coef in zip(features, model.coef_):
+    print(f"  {feat}: {coef:.2f}")
