@@ -1,0 +1,17 @@
+import pandas as pd
+from sklearn.cluster import KMeans
+
+# Sample retail transaction dataset
+data = {
+    'CustomerID': [1, 2, 3, 4, 5, 6, 7, 8],
+    'Total_Amount_Spent': [120, 150, 950, 1100, 450, 520, 90, 1050],
+    'Visit_Frequency': [2, 3, 18, 22, 8, 10, 1, 20]
+}
+df = pd.DataFrame(data)
+
+X = df[['Total_Amount_Spent', 'Visit_Frequency']]
+
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+df['Cluster'] = kmeans.fit_predict(X)
+
+print(df.sort_values(by='Cluster'))
