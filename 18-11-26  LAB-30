@@ -1,0 +1,49 @@
+import numpy as np
+from sklearn.tree import DecisionTreeRegressor
+
+# Sample dataset: [Mileage_km, Age_years, Brand_Score(1-10), Engine_Type(0=Petrol, 1=Diesel, 2=EV)]
+feature_names = ["Mileage_km", "Age_years", "Brand_Score", "Engine_Type"]
+X = np.array([
+    [15000, 1, 8, 2],
+    [45000, 3, 7, 1],
+    [80000, 6, 6, 0],
+    [25000, 2, 9, 2],
+    [60000, 4, 7, 1],
+    [110000, 8, 5, 0]
+])
+y = np.array([28000, 19500, 11000, 32000, 17000, 7500])
+
+cart = DecisionTreeRegressor(max_depth=3, random_state=42)
+cart.fit(X, y)
+
+# User input
+mileage = float(input("Enter car mileage (km): "))
+age = float(input("Enter car age (years): "))
+brand = float(input("Enter brand rating (1-10): "))
+engine = int(input("Enter engine type (0=Petrol, 1=Diesel, 2=EV): "))
+
+new_car = np.array([[mileage, age, brand, engine]])
+predicted_price = cart.predict(new_car)[0]
+
+print(f"\nPredicted Car Price: ${predicted_price:,.2f}")
+print("\nDecision Path:")
+
+# Extract decision path for the new car
+node_indicator = cart.decision_path(new_car)
+leaf_id = cart.apply(new_car)[0]
+feature = cart.tree_.feature
+threshold = cart.tree_.threshold
+
+node_index = node_indicator.indices[node_indicator.indptr[0]:node_indicator.indptr[1]]
+for node_id in node_index:
+    if leaf_id == node_id:
+        print(f" -> Leaf Node {node_id}: Predicted Value = ${cart.tree_.value[node_id][0][0]:,.2f}")
+        continue
+    if new_car[0, feature[node_id]] <= threshold[node_id]:
+        sign = "<="
+    else:
+        sign = ">"
+    print(
+        f" -> Node {node_id}: {feature_names[feature[node_id]]} "
+        f"({new_car[0, feature[node_id]]}) {sign} {threshold[node_id]:.2f}"
+    )
