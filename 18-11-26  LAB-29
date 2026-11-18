@@ -1,0 +1,32 @@
+import pandas as pd
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
+# Load dataset into DataFrame
+data = load_breast_cancer()
+df = pd.DataFrame(data.data, columns=data.feature_names)
+df['target'] = data.target
+
+print("Available features:", list(data.feature_names[:5]), "... (total 30 features)")
+print("Target column name: target")
+
+# User input for feature names and target variable
+feature_input = input("Enter comma-separated feature names (e.g., mean radius, mean texture): ")
+features = [f.strip() for f in feature_input.split(",")]
+target_col = input("Enter target variable name: ").strip()
+
+X = df[features]
+y = df[target_col]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
+
+model = RandomForestClassifier(random_state=42)
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+
+print(f"\nAccuracy : {accuracy_score(y_test, y_pred):.4f}")
+print(f"Precision: {precision_score(y_test, y_pred):.4f}")
+print(f"Recall   : {recall_score(y_test, y_pred):.4f}")
+print(f"F1-Score : {f1_score(y_test, y_pred):.4f}")
