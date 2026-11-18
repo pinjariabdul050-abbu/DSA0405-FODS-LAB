@@ -1,0 +1,51 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
+# 1. Patient dataset (Gender: 0 = Female, 1 = Male)
+data = {
+    'Age': [28, 54, 45, 62, 33, 49, 58, 30, 65, 41],
+    'Gender': [1, 0, 1, 0, 0, 1, 1, 0, 0, 1],
+    'Blood_Pressure': [118, 145, 130, 155, 120, 140, 150, 115, 160, 128],
+    'Cholesterol': [180, 240, 210, 260, 190, 235, 250, 175, 270, 205],
+    'Outcome': ['Good', 'Bad', 'Good', 'Bad', 'Good', 'Bad', 'Bad', 'Good', 'Bad', 'Good']
+}
+df = pd.DataFrame(data)
+
+X = df[['Age', 'Gender', 'Blood_Pressure', 'Cholesterol']]
+y = df['Outcome']
+
+# 2. Split and scale features
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# 3. Train KNN model
+knn = KNeighborsClassifier(n_neighbors=3)
+knn.fit(X_train_scaled, y_train)
+
+# 4. Evaluate on test set
+y_pred = knn.predict(X_test_scaled)
+print("--- Model Evaluation on Test Set ---")
+print("Test Predictions:", list(y_pred))
+print("Actual Outcomes :", list(y_test))
+print(f"Accuracy : {accuracy_score(y_test, y_pred):.4f}")
+print(f"Precision: {precision_score(y_test, y_pred, pos_label='Good'):.4f}")
+print(f"Recall   : {recall_score(y_test, y_pred, pos_label='Good'):.4f}")
+print(f"F1-Score : {f1_score(y_test, y_pred, pos_label='Good'):.4f}")
+
+# 5. Predict outcome for a new patient
+print("\n--- Predict for New Patient ---")
+age = float(input("Enter patient age: "))
+gender = int(input("Enter gender (0 for Female, 1 for Male): "))
+bp = float(input("Enter blood pressure: "))
+chol = float(input("Enter cholesterol level: "))
+
+new_patient = pd.DataFrame([[age, gender, bp, chol]], columns=X.columns)
+new_patient_scaled = scaler.transform(new_patient)
+prediction = knn.predict(new_patient_scaled)[0]
+
+print(f"\nPredicted Treatment Outcome: {prediction}")
