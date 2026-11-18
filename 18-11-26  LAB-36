@@ -1,0 +1,25 @@
+import pandas as pd
+import numpy as np
+
+# Create sample stock CSV so script runs standalone
+sample_stock = pd.DataFrame({
+    'Date': pd.date_range(start='2026-01-01', periods=10, freq='B'),
+    'Close': [150.2, 152.5, 149.8, 155.0, 158.4, 154.1, 160.2, 162.0, 159.5, 165.3]
+})
+sample_stock.to_csv('stock_prices.csv', index=False)
+
+# Read CSV and calculate variability metrics
+df = pd.read_csv('stock_prices.csv')
+prices = df['Close']
+
+mean_price = prices.mean()
+std_dev = prices.std()
+variance = prices.var()
+price_range = prices.max() - prices.min()
+cv = (std_dev / mean_price) * 100  # Coefficient of Variation
+
+print(f"Mean Closing Price : ${mean_price:.2f}")
+print(f"Standard Deviation : ${std_dev:.2f}")
+print(f"Variance           : {variance:.2f}")
+print(f"Price Range        : ${price_range:.2f}")
+print(f"Volatility (CV)    : {cv:.2f}%")
