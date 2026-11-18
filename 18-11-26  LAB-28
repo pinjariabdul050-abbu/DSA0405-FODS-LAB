@@ -1,0 +1,24 @@
+import numpy as np
+from sklearn.cluster import KMeans
+
+# Sample e-commerce data: [Annual_Spend($), Purchases_Per_Year]
+X = np.array([
+    [500, 4],
+    [650, 5],
+    [4500, 35],
+    [5200, 42],
+    [1800, 15],
+    [2100, 18]
+])
+
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+kmeans.fit(X)
+
+# User input
+spend = float(input("Enter customer's annual spend ($): "))
+purchases = int(input("Enter number of purchases per year: "))
+
+new_customer = np.array([[spend, purchases]])
+segment = kmeans.predict(new_customer)[0]
+
+print(f"Assigned Customer Segment: Cluster {segment}")
